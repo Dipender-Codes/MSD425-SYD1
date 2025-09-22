@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Booking System</title>
+     <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Restaurant Booking System</h1>
+        <div class="header-right">
+            <div class="notification-badge">3</div>
+            <div style="width: 30px; height: 30px; background: #e74c3c; border-radius: 50%;"></div>
+        </div>
+    </div>
+
+    <!-- Top Controls -->
+    <div class="top-controls">
+        <div class="date-nav">
+            <button onclick="changeDate(-1)">&lt;</button>
+            <div class="current-date">Mon 22 Sep 2025</div>
+            <button onclick="changeDate(1)">&gt;</button>
+        </div>
+        <div class="service-section">
+            <label>Service:</label>
+            <select id="serviceSelect">
+                <option value="all">All</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+            </select>
+            <label>Section:</label>
+            <select id="sectionSelect">
+                <option value="all">All</option>
+                <option value="bistro">Bistro</option>
+                <option value="central">Central</option>
+                <option value="main-lounge">Main Lounge</option>
+            </select>
+        </div>
+    </div>
+
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="stats">
+                <div class="stats-row">
+                    <span>LUNCH</span>
+                    <span>5</span>
+                </div>
+                <div class="stats-row">
+                    <span>DINNER</span>
+                    <span>8</span>
+                </div>
+                <div class="stats-row">
+                    <span>TOTAL</span>
+                    <span>13</span>
+                </div>
+                <div class="stats-row">
+                    <span>0 WAIT LIST</span>
+                    <span>0</span>
+                </div>
+                <div class="stats-row">
+                    <span>0 STANDBY LIS</span>
+                    <span>0</span>
+                </div>
+            </div>
+            
+            <div class="booking-list">
+                <div class="booking-item">
+                    <div class="booking-time">11:30AM - 2:30PM</div>
+                    <div class="booking-details">
+                        <span class="booking-status status-confirmed"></span>
+                        MARGARET BRIGGS • P4 • T2
+                    </div>
+                </div>
+                <div class="booking-item">
+                    <div class="booking-time">5:00PM - 8:30PM</div>
+                    <div class="booking-details">
+                        <span class="booking-status status-unconfirmed"></span>
+                        KIM ETCELL • P6 • T40
+                    </div>
+                </div>
+                <div class="booking-item">
+                    <div class="booking-time">5:30PM - 9:00PM</div>
+                    <div class="booking-details">
+                        <span class="booking-status status-confirmed"></span>
+                        CATHY MACINTYRE • P6 • T2
+                    </div>
+                </div>
+                <div class="booking-item">
+                    <div class="booking-time">6:00PM - 9:30PM</div>
+                    <div class="booking-details">
+                        <span class="booking-status status-confirmed"></span>
+                        KAREN LORD • P16 • T21
+                    </div>
+                </div>
+                <div class="booking-item">
+                    <div class="booking-time">6:00PM - 9:30PM</div>
+                    <div class="booking-details">
+                        <span class="booking-status status-unconfirmed"></span>
+                        JENNIFER NUNN • P20 • T40
+                    </div>
+                </div>
+                <div class="booking-item">
+                    <div class="booking-time">6:30PM - 10:00PM</div>
+                    <div class="booking-details">
+                        <span class="booking-status status-confirmed"></span>
+                        VANESSA GILL • P3 • T40
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="time-grid">
+                <div class="time-header">
+                    <div class="section-header">BISTRO</div>
+                    <div class="section-header">CENTRAL</div>
+                    <div class="section-header">MAIN LOUNGE</div>
+                </div>
+                <div class="time-slots">
+                    <div class="section-column">
+                        <div class="time-slot">
+                            <div class="booking-block">11:30AM - 2:30PM<br>MARGARET BRIGGS • P4</div>
+                        </div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                    </div>
+                    <div class="section-column">
+                        <div class="time-slot">
+                            <div class="booking-block">LUNCH<br>CENTRAL SHARED</div>
+                        </div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                    </div>
+                    <div class="section-column">
+                        <div class="time-slot">
+                            <div class="booking-block">LUNCH<br>MAIN LOUNGE<br>SHARED</div>
+                        </div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                        <div class="time-slot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plus Button -->
+    <button class="plus-button" onclick="openModal()">+</button>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <span>📞</span>
+                <h2>New Booking</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="modal-tabs">
+                <button class="modal-tab active" onclick="switchTab('booking')">BOOKING</button>
+                <button class="modal-tab" onclick="switchTab('customer')">CUSTOMER</button>
+                <button class="modal-tab" onclick="switchTab('tags')">TAGS</button>
+                <button class="modal-tab" onclick="switchTab('notes')">NOTES</button>
+                <button class="modal-tab" onclick="switchTab('links')">LINKS</button>
+                <button class="modal-tab" onclick="switchTab('payment')">PAYMENT</button>
+            </div>
+
+            <div class="modal-content">
+                <!-- Booking Tab -->
+                <div class="tab-content active" id="bookingTab">
+                    <div class="booking-form">
+                        <div class="booking-left">
+                            <div class="form-group">
+                                <label>📅 Date</label>
+                                <input type="date" value="2025-09-22">
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>People</label>
+                                    <select>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="4">4</option>
+                                        <option value="6">6</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Duration</label>
+                                    <select>
+                                        <option value="2">2h 10min</option>
+                                        <option value="1.5">1h 30min</option>
+                                        <option value="2.5">2h 30min</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Service</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="lunch" name="service" value="lunch">
+                                        <label for="lunch">Lunch</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="dinner" name="service" value="dinner" checked>
+                                        <label for="dinner">Dinner</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Section</label>
+                                <div class="section-options">
+                                    <div class="section-option">
+                                        <input type="radio" id="any" name="section" value="any" checked>
+                                        <label for="any">Any</label>
+                                    </div>
+                                    <div class="section-option">
+                                        <input type="radio" id="bistro" name="section" value="bistro">
+                                        <label for="bistro">Bistro</label>
+                                    </div>
+                                    <div class="section-option">
+                                        <input type="radio" id="central" name="section" value="central">
+                                        <label for="central">Central</label>
+                                    </div>
+                                    <div class="section-option">
+                                        <input type="radio" id="mainLounge" name="section" value="main-lounge">
+                                        <label for="mainLounge">Main Lounge</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Staff</label>
+                                <input type="text" placeholder="Assign staff member">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <div class="status-indicator">
+                                        <div class="status-dot"></div>
+                                        <select>
+                                            <option value="unconfirmed">Unconfirmed</option>
+                                            <option value="confirmed">Confirmed</option>
+                                            <option value="cancelled">Cancelled</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Table</label>
+                                    <select>
+                                        <option value="">Select table</option>
+                                        <option value="T1">Table 1</option>
+                                        <option value="T2">Table 2</option>
+                                        <option value="T21">Table 21</option>
+                                        <option value="T40">Table 40</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-right">
+                            <div class="form-group">
+                                <label>Available Times</label>
+                                <div class="time-slots-grid">
+                                    <button class="time-slot-btn">5:00PM</button>
+                                    <button class="time-slot-btn">5:30PM</button>
+                                    <button class="time-slot-btn">6:00PM</button>
+                                    <button class="time-slot-btn">6:30PM</button>
+                                    <button class="time-slot-btn">7:00PM</button>
+                                    <button class="time-slot-btn">7:30PM</button>
+                                    <button class="time-slot-btn">8:00PM</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Customer Tab -->
+                <div class="tab-content" id="customerTab">
+                    <div class="customer-form">
+                        <div class="customer-left">
+                            <div class="form-group">
+                                <label>Customer Search</label>
+                                <p style="color: #666; font-size: 12px; margin-bottom: 10px;">First enter the customer's details.</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="phone-input">
+                                    <div class="country-code">🇦🇺 AU +61</div>
+                                    <input type="tel" placeholder="Phone">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" placeholder="👤 First Name">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" placeholder="👤 Surname">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="email" placeholder="✉️ Email">
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" placeholder="🏢 Company">
+                            </div>
+                        </div>
+
+                        <div class="customer-right">
+                            <div class="form-group">
+                                <label>Search matches</label>
+                                <p style="color: #666; font-size: 12px; margin-bottom: 10px;">Select or create a customer to continue with your booking.</p>
+                            </div>
+
+                            <div class="search-results">
+                                <div class="search-result-header">
+                                    <span>First name</span>
+                                    <span>Surname</span>
+                                    <span>Phone</span>
+                                    <span>Email</span>
+                                    <span>Tags</span>
+                                    <span>Company</span>
+                                </div>
+                                <div class="search-placeholder">
+                                    Search by Phone, First Name,<br>
+                                    Surname, Email or Company
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tags Tab -->
+                <div class="tab-content" id="tagsTab">
+                    <div class="form-group">
+                        <label>Tags</label>
+                        <input type="text" placeholder="Add tags (comma separated)">
+                    </div>
+                    <div class="form-group">
+                        <label>Popular Tags</label>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+                            <button style="padding: 5px 10px; border: 1px solid #ddd; background: #f8f8f8; border-radius: 4px; cursor: pointer;">VIP</button>
+                            <button style="padding: 5px 10px; border: 1px solid #ddd; background: #f8f8f8; border-radius: 4px; cursor: pointer;">Birthday</button>
+                            <button style="padding: 5px 10px; border: 1px solid #ddd; background: #f8f8f8; border-radius: 4px; cursor: pointer;">Anniversary</button>
+                            <button style="padding: 5px 10px; border: 1px solid #ddd; background: #f8f8f8; border-radius: 4px; cursor: pointer;">Business</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Tab -->
+                <div class="tab-content" id="notesTab">
+                    <div class="form-group">
+                        <label>Internal Notes</label>
+                        <textarea placeholder="Add internal notes for staff..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Customer Notes</label>
+                        <textarea placeholder="Add notes visible to customer..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Links Tab -->
+                <div class="tab-content" id="linksTab">
+                    <div class="form-group">
+                        <label>External Links</label>
+                        <input type="url" placeholder="Add website or external link">
+                    </div>
+                    <div class="form-group">
+                        <label>Social Media</label>
+                        <input type="url" placeholder="Facebook, Instagram, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label>Documents</label>
+                        <input type="url" placeholder="Link to documents or files">
+                    </div>
+                </div>
+
+                <!-- Payment Tab -->
+                <div class="tab-content" id="paymentTab">
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        <h3>NO PAYMENT</h3>
+                        <p style="margin-top: 10px;">Payment processing not configured</p>
+                        <button style="margin-top: 20px; padding: 10px 20px; background: #e74c3c; color: white; border: none; border-radius: 4px; cursor: pointer;">Configure Payment</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-nav">
+                <button class="nav-button back" onclick="closeModal()">← BOOKING</button>
+                <button class="nav-button next" onclick="nextStep()">CUSTOMER →</button>
+            </div>
+        </div>
+    </div>
+        <script src="script.js"></script>
+</body>
+</html>
