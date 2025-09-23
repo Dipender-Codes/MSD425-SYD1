@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Booking System</title>
+     <link rel="stylesheet" href="style.css">
+    </head>
+<body>
+       <!-- Header -->
+    <div class="header">
+        <h1>Restaurant Booking System</h1>
+        <div class="header-right">
+            <div class="notification-badge" id="notificationBadge">3</div>
+            <div class="user-avatar">JD</div>
+        </div>
+    </div>
+
+    <!-- Top Controls -->
+    <div class="top-controls">
+        <div class="date-nav">
+            <button onclick="changeDate(-1)" title="Previous Day">&lt;</button>
+            <div class="current-date" id="currentDate">Mon 22 Sep 2025</div>
+            <button onclick="changeDate(1)" title="Next Day">&gt;</button>
+        </div>
+        <div class="service-section">
+            <label>Service:</label>
+            <select id="serviceSelect">
+                <option value="all">All Services</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="brunch">Brunch</option>
+            </select>
+            <label>Section:</label>
+            <select id="sectionSelect">
+                <option value="all">All Sections</option>
+                <option value="bistro">Bistro</option>
+                <option value="central">Central</option>
+                <option value="main-lounge">Main Lounge</option>
+                <option value="terrace">Terrace</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="stats">
+                <h3>Today's Overview</h3>
+                <div class="stats-row">
+                    <span>Lunch Bookings</span>
+                    <span id="lunchCount">5</span>
+                </div>
+                <div class="stats-row">
+                    <span>Dinner Bookings</span>
+                    <span id="dinnerCount">8</span>
+                </div>
+                <div class="stats-row">
+                    <span>Total Bookings</span>
+                    <span id="totalCount">13</span>
+                </div>
+                <div class="stats-row">
+                    <span>Wait List</span>
+                    <span id="waitListCount">0</span>
+                </div>
+                <div class="stats-row">
+                    <span>Standby List</span>
+                    <span id="standbyCount">0</span>
+                </div>
+            </div>
+            
+            <div class="booking-list">
+                <h3>Today's Bookings</h3>
+                <div id="bookingsList">
+                    <div class="booking-item" data-id="1">
+                        <div class="booking-time">11:30 AM - 2:30 PM</div>
+                        <div class="booking-details">
+                            <span class="booking-status status-confirmed"></span>
+                            <span>Margaret Briggs • 4 people</span>
+                        </div>
+                        <div class="booking-meta">
+                            <span class="booking-tag">Table 2</span>
+                            <span class="booking-tag">Bistro</span>
+                        </div>
+                    </div>
+                    <div class="booking-item" data-id="2">
+                        <div class="booking-time">5:00 PM - 8:30 PM</div>
+                        <div class="booking-details">
+                            <span class="booking-status status-unconfirmed"></span>
+                            <span>Kim Etcell • 6 people</span>
+                        </div>
+                        <div class="booking-meta">
+                            <span class="booking-tag">Table 40</span>
+                            <span class="booking-tag">Central</span>
+                        </div>
+                    </div>
+                    <div class="booking-item" data-id="3">
+                        <div class="booking-time">5:30 PM - 9:00 PM</div>
+                        <div class="booking-details">
+                            <span class="booking-status status-confirmed"></span>
+                            <span>Cathy MacIntyre • 6 people</span>
+                        </div>
+                        <div class="booking-meta">
+                            <span class="booking-tag">Table 2</span>
+                            <span class="booking-tag">Main Lounge</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="time-grid">
+                <div class="time-header">
+                    <div class="section-header">Bistro (12 tables)</div>
+                    <div class="section-header">Central (8 tables)</div>
+                    <div class="section-header">Main Lounge (15 tables)</div>
+                </div>
+                <div class="time-slots" id="timeSlots">
+                    <!-- Time slots will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plus Button -->
+    <button class="plus-button" onclick="openModal()" title="Create New Booking">+</button>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <span>📞</span>
+                <h2 id="modalTitle">New Booking</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="modal-tabs">
+                <button class="modal-tab active" onclick="switchTab('booking')">BOOKING</button>
+                <button class="modal-tab" onclick="switchTab('customer')">CUSTOMER</button>
+                <button class="modal-tab" onclick="switchTab('tags')">TAGS</button>
+                <button class="modal-tab" onclick="switchTab('notes')">NOTES</button>
+                <button class="modal-tab" onclick="switchTab('links')">LINKS</button>
+                <button class="modal-tab" onclick="switchTab('payment')">PAYMENT</button>
+            </div>
+
+            <div class="modal-content">
+                <div id="messageContainer"></div>
+                
+                <!-- Booking Tab -->
+                <div class="tab-content active" id="bookingTab">
+                    <form id="bookingForm">
+                        <div class="form-grid">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>📅 Date</label>
+                                    <input type="date" id="bookingDate" value="2025-09-22" required>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>People</label>
+                                        <select id="partySize" required>
+                                            <option value="">Select size</option>
+                                            <option value="1">1 person</option>
+                                            <option value="2">2 people</option>
+                                            <option value="3">3 people</option>
+                                            <option value="4">4 people</option>
+                                            <option value="5">5 people</option>
+                                            <option value="6">6 people</option>
+                                            <option value="7">7 people</option>
+                                            <option value="8">8 people</option>
+                                            <option value="10">10+ people</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Duration</label>
+                                        <select id="duration" required>
+                                            <option value="90">1h 30min</option>
+                                            <option value="120">2h 00min</option>
+                                            <option value="150">2h 30min</option>
+                                            <option value="180">3h 00min</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Service</label>
+                                    <div class="radio-group">
+                                        <div class="radio-option">
+                                            <input type="radio" id="serviceLunch" name="service" value="lunch">
+                                            <label for="serviceLunch">Lunch</label>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" id="serviceDinner" name="service" value="dinner" checked>
+                                            <label for="serviceDinner">Dinner</label>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" id="serviceBrunch" name="service" value="brunch">
+                                            <label for="serviceBrunch">Brunch</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Section</label>
+                                    <div class="radio-group">
+                                        <div class="radio-option">
+                                            <input type="radio" id="sectionAny" name="section" value="any" checked>
+                                            <label for="sectionAny">Any</label>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" id="sectionBistro" name="section" value="bistro">
+                                            <label for="sectionBistro">Bistro</label>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" id="sectionCentral" name="section" value="central">
+                                            <label for="sectionCentral">Central</label>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" id="sectionMainLounge" name="section" value="main-lounge">
+                                            <label for="sectionMainLounge">Main Lounge</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <div class="status-indicator">
+                                            <div class="status-dot"></div>
+                                            <select id="bookingStatus">
+                                                <option value="unconfirmed">Unconfirmed</option>
+                                                <option value="confirmed">Confirmed</option>
+                                                <option value="cancelled">Cancelled</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Table</label>
+                                        <select id="tableSelect">
+                                            <option value="">Auto-assign</option>
+                                            <option value="T1">Table 1</option>
+                                            <option value="T2">Table 2</option>
+                                            <option value="T3">Table 3</option>
+                                            <option value="T21">Table 21</option>
+                                            <option value="T40">Table 40</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Staff Member</label>
+                                    <select id="staffSelect">
+                                        <option value="">Assign staff</option>
+                                        <option value="john-doe">John Doe</option>
+                                        <option value="jane-smith">Jane Smith</option>
+                                        <option value="mike-johnson">Mike Johnson</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>Available Times</label>
+                                    <div class="time-slots-grid" id="availableTimes">
+                                        <button type="button" class="time-slot-btn" data-time="17:00">5:00 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="17:30">5:30 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="18:00">6:00 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="18:30">6:30 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="19:00">7:00 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="19:30">7:30 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="20:00">8:00 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="20:30">8:30 PM</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Customer Tab -->
+                <div class="tab-content" id="customerTab">
+                    <form id="customerForm">
+                        <div class="form-grid">
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>Customer Search</label>
+                                    <p style="color: #718096; font-size: 12px; margin-bottom: 16px;">Enter customer details to search or create new customer.</p>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <div style="display: flex;">
+                                        <div style="background: #f7fafc; border: 1px solid #e2e8f0; border-right: none; padding: 12px 16px; border-radius: 8px 0 0 8px; font-size: 14px;">AU +61</div>
+                                        <input type="tel" id="customerPhone" placeholder="Phone number" style="border-radius: 0 8px 8px 0;">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" id="customerFirstName" placeholder="First name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" id="customerLastName" placeholder="Last name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" id="customerEmail" placeholder="Email address">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <input type="text" id="customerCompany" placeholder="Company name">
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <div class="form-group">
+                                    <label>Search Results</label>
+                                    <p style="color: #718096; font-size: 12px; margin-bottom: 16px;">Select existing customer or create new one.</p>
+                                </div>
+
+                                <div class="search-results">
+                                    <div class="search-result-header">
+                                        <span>First Name</span>
+                                        <span>Last Name</span>
+                                        <span>Phone</span>
+                                        <span>Email</span>
+                                        <span>Tags</span>
+                                        <span>Company</span>
+                                    </div>
+                                    <div class="search-placeholder" id="searchResults">
+                                        Search by phone, name, email or company
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tags Tab -->
+                <div class="tab-content" id="tagsTab">
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label>Customer Tags</label>
+                            <input type="text" id="customerTags" placeholder="Add tags (comma separated)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Popular Tags</label>
+                            <div class="tag-buttons">
+                                <button type="button" class="tag-button" data-tag="VIP">VIP</button>
+                                <button type="button" class="tag-button" data-tag="Birthday">Birthday</button>
+                                <button type="button" class="tag-button" data-tag="Anniversary">Anniversary</button>
+                                <button type="button" class="tag-button" data-tag="Business">Business</button>
+                                <button type="button" class="tag-button" data-tag="Regular">Regular</button>
+                                <button type="button" class="tag-button" data-tag="Special Diet">Special Diet</button>
+                                <button type="button" class="tag-button" data-tag="Large Group">Large Group</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes Tab -->
+                <div class="tab-content" id="notesTab">
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label>Internal Notes</label>
+                            <textarea id="internalNotes" rows="4" placeholder="Notes for staff only (not visible to customer)"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Customer Notes</label>
+                            <textarea id="customerNotes" rows="4" placeholder="Notes visible to customer"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Special Requirements</label>
+                            <textarea id="specialRequirements" rows="3" placeholder="Dietary requirements, accessibility needs, etc."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Links Tab -->
+                <div class="tab-content" id="linksTab">
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label>Website</label>
+                            <input type="url" id="customerWebsite" placeholder="https://example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Social Media</label>
+                            <input type="url" id="socialMedia" placeholder="Facebook, Instagram, LinkedIn, etc.">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Documents</label>
+                            <input type="url" id="documents" placeholder="Link to documents or files">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Tab -->
+                <div class="tab-content" id="paymentTab">
+                    <div style="text-align: center; padding: 40px; color: #718096;">
+                        <h3>Payment Processing</h3>
+                        <p style="margin: 16px 0;">Payment integration not configured</p>
+                        <button type="button" style="padding: 12px 24px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">Configure Payment Gateway</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-nav">
+                <button class="nav-button back" id="backButton" onclick="handleBack()">← BOOKING</button>
+                <button class="nav-button next" id="nextButton" onclick="handleNext()">CUSTOMER →</button>
+            </div>
+        </div>
+    </div>
+        <script src="script.js"></script>
+</body>
+</html>
