@@ -1,0 +1,35 @@
+# 1. Make sure you're on main branch
+git checkout main
+
+# 2. Pull latest changes from GitHub (avoid conflicts)
+git pull origin main
+
+# 3. Create and switch to a new feature branch
+git checkout -b feature-enhanced-ui-backend-start
+
+# 4. Stage all changes (HTML, CSS, JS, etc.)
+git add .
+
+# 5. Commit with a clear message
+git commit -m "Enhanced UI and started backend integration setup"
+
+# 6. Push branch to GitHub
+git push -u origin feature-enhanced-ui-backend-start
+
+# 7. Switch back to main branch
+git checkout main
+
+# 8. Pull latest main branch from GitHub
+git pull origin main
+
+# 9. Merge your feature branch into main
+git merge feature-enhanced-ui-backend-start
+
+# 10. Push updated main branch to GitHub
+git push origin main
+
+# 11. Delete local branch
+git branch -d feature-enhanced-ui-backend-start
+
+# 12. Delete remote branch on GitHub
+git push origin --delete feature-enhanced-ui-backend-start
