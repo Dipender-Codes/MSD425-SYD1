@@ -8,72 +8,29 @@ on:
 
 jobs:
   detect:
-    name: Detect workspaces
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Check folders and set outputs
-        id: detect
-        run: |
-          FRONTEND=false
-          BACKEND=false
-          if [ -f "frontend/package.json" ]; then FRONTEND=true; fi
-          if [ -f "backend/package.json" ]; then BACKEND=true; fi
-          echo "frontend_present=$FRONTEND" >> "$GITHUB_OUTPUT"
-          echo "backend_present=$BACKEND"  >> "$GITHUB_OUTPUT"
     outputs:
-      frontend_present: ${{ steps.detect.outputs.frontend_present }}
-      backend_present:  ${{ steps.detect.outputs.backend_present }}
-
-  frontend:
-    name: Frontend (frontend/)
-    needs: detect
-    if: ${{ needs.detect.outputs.frontend_present == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
+      has_frontend: ${{ steps.chk.outputs.has_frontend }}
+      has_backend: ${{ steps.chk.outputs.has_backend }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-      - run: npm ci || npm install
-      - run: npm run lint --if-present
-      - run: npm test --if-present -- --ci --passWithNoTests
-      - run: npm run build --if-present
+      - id: chk
+        shell: bash
+        run: |
+          if [[ -f frontend/package.json ]]; then
+            echo "has_frontend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_frontend=false" >> "$GITHUB_OUTPUT"
+          fi
+          if [[ -f backend/package.json ]]; then
+            echo "has_backend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_backend=false" >> "$GITHUB_OUTPUT"
+          fi
 
-  backend:
-    name: Backend (backend/)
-    needs: detect
-    if: ${{ needs.detect.outputs.backend_present == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
-      - run: npm ci || npm install
-      - run: npm test --if-present -- --ci --passWithNoTests
-      - run: npm run build --if-present
-name: CI
-
-on:
-  pull_request:
-    branches: [ main, develop ]
-  push:
-    branches: [ main, develop ]
-
-jobs:
   frontend:
-    if: ${{ hashFiles('frontend/package.json') != '' }}
+    needs: detect
+    if: needs.detect.outputs.has_frontend == 'true'
     name: Frontend (frontend/)
     runs-on: ubuntu-latest
     defaults:
@@ -92,7 +49,8 @@ jobs:
       - run: npm run build --if-present
 
   backend:
-    if: ${{ hashFiles('backend/package.json') != '' }}
+    needs: detect
+    if: needs.detect.outputs.has_backend == 'true'
     name: Backend (backend/)
     runs-on: ubuntu-latest
     defaults:
