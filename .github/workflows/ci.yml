@@ -71,20 +71,24 @@ jobs:
             backend/package-lock.json
             backend/yarn.lock
             backend/pnpm-lock.yaml
+
       - run: npm ci || npm install
+
       - name: Lint (only if ESLint config exists)
         run: |
-          if [ -f .eslintrc.js ] || [ -f .eslintrc.cjs ] || [ -f .eslintrc.json ] || [ -f .eslintrc.yml ] || [ -f eslint.config.js ]; then
+          if [ -f .eslintrc ] || [ -f .eslintrc.js ] || [ -f .eslintrc.cjs ] || [ -f .eslintrc.json ] || [ -f .eslintrc.yml ] || [ -f eslint.config.js ]; then
             npm run lint --if-present
           else
             echo "No ESLint config found; skipping lint."
           fi
+
       - name: Test (only if tests exist)
-	run: |
-	  if [ -d tests ] || [ -f jest.config.js ] || [ -f jest.config.cjs ]; then
-	    npm test -- --ci --passWithNoTests
-    	  else
-      	    echo "No test files/config found; skipping tests."
-    	  fi
+        run: |
+          if [ -d tests ] || [ -f jest.config.js ] || [ -f jest.config.cjs ]; then
+            npm test -- --ci --passWithNoTests
+          else
+            echo "No test files/config found; skipping tests."
+          fi
+
       - run: npm run build --if-present
 
