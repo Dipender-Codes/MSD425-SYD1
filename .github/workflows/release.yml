@@ -23,4 +23,3 @@ jobs:
              {"type":"docs","section":"Docs","hidden":false},
              {"type":"refactor","section":"Refactors","hidden":false},
              {"type":"test","section":"Tests","hidden":false}]
-
