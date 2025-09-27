@@ -1,8 +1,8 @@
- name: Release Please
+name: Release Please
 
 on:
   push:
-    branches: [ main ]  
+    branches: [ main ]
 
 permissions:
   contents: write
@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: google-github-actions/release-please-action@v4
         with:
-          release-type: simple          
+          release-type: simple
           package-name: msd425-syd1
           changelog-types: >
             [{"type":"feat","section":"Features","hidden":false},
