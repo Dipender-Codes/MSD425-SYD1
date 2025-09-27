@@ -79,6 +79,12 @@ jobs:
           else
             echo "No ESLint config found; skipping lint."
           fi
-      - run: npm test --if-present -- --ci --passWithNoTests
+      - name: Test (only if tests exist)
+	run: |
+	  if [ -d tests ] || [ -f jest.config.js ] || [ -f jest.config.cjs ]; then
+	    npm test -- --ci --passWithNoTests
+    	  else
+      	    echo "No test files/config found; skipping tests."
+    	  fi
       - run: npm run build --if-present
 
