@@ -11,6 +11,420 @@
      line-height: 1.6;
  }
 
+ /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+        }
+
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2d3748;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .login-form input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #5a67d8;
+        }
+
+        .login-error {
+            color: #e53e3e;
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* Main App */
+        .main-app {
+            display: none;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            background: #ffffff;
+            padding: 0 24px;
+            display: flex;
+            gap: 32px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .nav-tab {
+            padding: 16px 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #718096;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            color: #4a5568;
+        }
+
+        .nav-tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .content-container {
+            display: none;
+        }
+
+        .content-container.active {
+            display: block;
+        }
+
+        /* User Menu */
+        .user-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            min-width: 160px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .user-menu.active {
+            display: block;
+        }
+
+        .user-menu button {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            background: none;
+            text-align: left;
+            cursor: pointer;
+            font-size: 14px;
+            color: #4a5568;
+        }
+
+        .user-menu button:hover {
+            background: #f7fafc;
+        }
+
+        /* Analytics Dashboard */
+        .analytics-container {
+            padding: 24px;
+            background: #f8fafc;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .analytics-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .analytics-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #2d3748;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f7fafc;
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .metric-value {
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .chart-placeholder {
+            height: 200px;
+            background: #f7fafc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            font-style: italic;
+        }
+
+        /* Customer Management */
+        .customer-container {
+            padding: 24px;
+            background: #f8fafc;
+        }
+
+        .customer-search {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .customer-list {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .customer-item {
+            padding: 20px 24px;
+            border-bottom: 1px solid #f7fafc;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .customer-item:hover {
+            background: #f7fafc;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .customer-info {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 8px;
+        }
+
+        .customer-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .customer-tag {
+            background: #e6fffa;
+            color: #38b2ac;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            border-left: 1px solid #e2e8f0;
+            box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+            z-index: 3000;
+            transition: right 0.3s ease;
+        }
+
+        .notification-panel.active {
+            right: 0;
+        }
+
+        .notification-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-item {
+            padding: 16px 24px;
+            border-bottom: 1px solid #f7fafc;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 4px;
+        }
+
+        .notification-message {
+            color: #2d3748;
+        }
+
+        /* GDPR Notice */
+        .gdpr-notice {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 1px solid #e2e8f0;
+            z-index: 1000;
+            display: none;
+        }
+
+        .gdpr-notice.show {
+            display: block;
+        }
+
+        .gdpr-actions {
+            margin-top: 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .gdpr-btn {
+            padding: 8px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .gdpr-btn.primary {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Conflict Detection Styles */
+        .time-slot-btn.unavailable {
+            background: #fed7d7 !important;
+            color: #c53030 !important;
+            cursor: not-allowed !important;
+        }
+
+        /* Enhanced notification badge */
+        .notification-badge {
+            cursor: pointer;
+        }
+
+        .notification-badge:hover {
+            transform: scale(1.1);
+        }
+
+        /* User avatar positioning */
+        .user-avatar {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design Enhancements */
+        @media (max-width: 768px) {
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                overflow-x: auto;
+            }
+
+            .notification-panel {
+                width: 100%;
+                right: -100%;
+            }
+
+            .gdpr-notice {
+                left: 10px;
+                right: 10px;
+            }
+
+            .customer-container {
+                padding: 16px;
+            }
+
+            .analytics-container {
+                padding: 16px;
+            }
+        }
+        
  /* Header */
  .header {
      background: #ffffff;
