@@ -4,122 +4,277 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Booking System</title>
-     <link rel="stylesheet" href="style.css">
-    </head>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
-       <!-- Header -->
-    <div class="header">
-        <h1>Restaurant Booking System</h1>
-        <div class="header-right">
-            <div class="notification-badge" id="notificationBadge">3</div>
-            <div class="user-avatar">JD</div>
-        </div>
-    </div>
-
-    <!-- Top Controls -->
-    <div class="top-controls">
-        <div class="date-nav">
-            <button onclick="changeDate(-1)" title="Previous Day">&lt;</button>
-            <div class="current-date" id="currentDate">Mon 22 Sep 2025</div>
-            <button onclick="changeDate(1)" title="Next Day">&gt;</button>
-        </div>
-        <div class="service-section">
-            <label>Service:</label>
-            <select id="serviceSelect">
-                <option value="all">All Services</option>
-                <option value="lunch">Lunch</option>
-                <option value="dinner">Dinner</option>
-                <option value="brunch">Brunch</option>
-            </select>
-            <label>Section:</label>
-            <select id="sectionSelect">
-                <option value="all">All Sections</option>
-                <option value="bistro">Bistro</option>
-                <option value="central">Central</option>
-                <option value="main-lounge">Main Lounge</option>
-                <option value="terrace">Terrace</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Main Container -->
-    <div class="main-container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="stats">
-                <h3>Today's Overview</h3>
-                <div class="stats-row">
-                    <span>Lunch Bookings</span>
-                    <span id="lunchCount">5</span>
+<!-- Login Screen (RFP Requirement) -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <h2>Restaurant Booking System</h2>
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username">
                 </div>
-                <div class="stats-row">
-                    <span>Dinner Bookings</span>
-                    <span id="dinnerCount">8</span>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password">
                 </div>
-                <div class="stats-row">
-                    <span>Total Bookings</span>
-                    <span id="totalCount">13</span>
-                </div>
-                <div class="stats-row">
-                    <span>Wait List</span>
-                    <span id="waitListCount">0</span>
-                </div>
-                <div class="stats-row">
-                    <span>Standby List</span>
-                    <span id="standbyCount">0</span>
-                </div>
+                <button class="login-btn" onclick="handleLogin()">Login</button>
+                <div class="login-error" id="loginError" style="display: none;"></div>
             </div>
-            
-            <div class="booking-list">
-                <h3>Today's Bookings</h3>
-                <div id="bookingsList">
-                    <div class="booking-item" data-id="1">
-                        <div class="booking-time">11:30 AM - 2:30 PM</div>
-                        <div class="booking-details">
-                            <span class="booking-status status-confirmed"></span>
-                            <span>Margaret Briggs • 4 people</span>
-                        </div>
-                        <div class="booking-meta">
-                            <span class="booking-tag">Table 2</span>
-                            <span class="booking-tag">Bistro</span>
-                        </div>
-                    </div>
-                    <div class="booking-item" data-id="2">
-                        <div class="booking-time">5:00 PM - 8:30 PM</div>
-                        <div class="booking-details">
-                            <span class="booking-status status-unconfirmed"></span>
-                            <span>Kim Etcell • 6 people</span>
-                        </div>
-                        <div class="booking-meta">
-                            <span class="booking-tag">Table 40</span>
-                            <span class="booking-tag">Central</span>
-                        </div>
-                    </div>
-                    <div class="booking-item" data-id="3">
-                        <div class="booking-time">5:30 PM - 9:00 PM</div>
-                        <div class="booking-details">
-                            <span class="booking-status status-confirmed"></span>
-                            <span>Cathy MacIntyre • 6 people</span>
-                        </div>
-                        <div class="booking-meta">
-                            <span class="booking-tag">Table 2</span>
-                            <span class="booking-tag">Main Lounge</span>
-                        </div>
+            <div style="margin-top: 20px; text-align: center; font-size: 12px; color: #718096;">
+                Demo credentials: admin / password123
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div class="main-app" id="mainApp">
+        <!-- Header -->
+        <div class="header">
+            <h1>Restaurant Booking System</h1>
+            <div class="header-right">
+                <div class="notification-badge" id="notificationBadge" onclick="toggleNotifications()">3</div>
+                <div class="user-avatar" onclick="toggleUserMenu()">
+                    JD
+                    <div class="user-menu" id="userMenu">
+                        <button onclick="switchMainTab('analytics')">Analytics</button>
+                        <button onclick="switchMainTab('customers')">Customers</button>
+                        <button onclick="exportData()">Export Data</button>
+                        <button onclick="handleLogout()">Logout</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="main-content">
-            <div class="time-grid">
-                <div class="time-header">
-                    <div class="section-header">Bistro (12 tables)</div>
-                    <div class="section-header">Central (8 tables)</div>
-                    <div class="section-header">Main Lounge (15 tables)</div>
+        <!-- Navigation Tabs (RFP Requirement) -->
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchMainTab('bookings')">Bookings</button>
+            <button class="nav-tab" onclick="switchMainTab('analytics')">Analytics</button>
+            <button class="nav-tab" onclick="switchMainTab('customers')">Customers</button>
+        </div>
+
+        <!-- Bookings Content (Your Original Layout) -->
+        <div class="content-container active" id="bookingsContent">
+            <!-- Top Controls -->
+            <div class="top-controls">
+                <div class="date-nav">
+                    <button onclick="changeDate(-1)" title="Previous Day">&lt;</button>
+                    <div class="current-date" id="currentDate">Mon 22 Sep 2025</div>
+                    <button onclick="changeDate(1)" title="Next Day">&gt;</button>
                 </div>
-                <div class="time-slots" id="timeSlots">
-                    <!-- Time slots will be populated by JavaScript -->
+                <div class="service-section">
+                    <label>Service:</label>
+                    <select id="serviceSelect" onchange="filterBookings()">
+                        <option value="all">All Services</option>
+                        <option value="lunch">Lunch</option>
+                        <option value="dinner">Dinner</option>
+                        <option value="brunch">Brunch</option>
+                    </select>
+                    <label>Section:</label>
+                    <select id="sectionSelect" onchange="filterBookings()">
+                        <option value="all">All Sections</option>
+                        <option value="bistro">Bistro</option>
+                        <option value="central">Central</option>
+                        <option value="main-lounge">Main Lounge</option>
+                        <option value="terrace">Terrace</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Main Container -->
+            <div class="main-container">
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <div class="stats">
+                        <h3>Today's Overview</h3>
+                        <div class="stats-row">
+                            <span>Lunch Bookings</span>
+                            <span id="lunchCount">5</span>
+                        </div>
+                        <div class="stats-row">
+                            <span>Dinner Bookings</span>
+                            <span id="dinnerCount">8</span>
+                        </div>
+                        <div class="stats-row">
+                            <span>Total Bookings</span>
+                            <span id="totalCount">13</span>
+                        </div>
+                        <div class="stats-row">
+                            <span>Wait List</span>
+                            <span id="waitListCount">0</span>
+                        </div>
+                        <div class="stats-row">
+                            <span>Conflicts Detected</span>
+                            <span id="conflictCount" style="background: #fed7d7; color: #c53030;">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="booking-list">
+                        <h3>Today's Bookings</h3>
+                        <div id="bookingsList">
+                            <div class="booking-item" data-id="1" onclick="openModal(1)">
+                                <div class="booking-time">11:30 AM - 2:30 PM</div>
+                                <div class="booking-details">
+                                    <span class="booking-status status-confirmed"></span>
+                                    <span>Margaret Briggs • 4 people</span>
+                                </div>
+                                <div class="booking-meta">
+                                    <span class="booking-tag">Table 2</span>
+                                    <span class="booking-tag">Bistro</span>
+                                </div>
+                            </div>
+                            <div class="booking-item" data-id="2" onclick="openModal(2)">
+                                <div class="booking-time">5:00 PM - 8:30 PM</div>
+                                <div class="booking-details">
+                                    <span class="booking-status status-unconfirmed"></span>
+                                    <span>Kim Etcell • 6 people</span>
+                                </div>
+                                <div class="booking-meta">
+                                    <span class="booking-tag">Table 40</span>
+                                    <span class="booking-tag">Central</span>
+                                </div>
+                            </div>
+                            <div class="booking-item" data-id="3" onclick="openModal(3)">
+                                <div class="booking-time">5:30 PM - 9:00 PM</div>
+                                <div class="booking-details">
+                                    <span class="booking-status status-confirmed"></span>
+                                    <span>Cathy MacIntyre • 6 people</span>
+                                </div>
+                                <div class="booking-meta">
+                                    <span class="booking-tag">Table 2</span>
+                                    <span class="booking-tag">Main Lounge</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="main-content">
+                    <div class="time-grid">
+                        <div class="time-header">
+                            <div class="section-header">Bistro (12 tables)</div>
+                            <div class="section-header">Central (8 tables)</div>
+                            <div class="section-header">Main Lounge (15 tables)</div>
+                        </div>
+                        <div class="time-slots" id="timeSlots">
+                            <!-- Time slots will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Content (RFP Requirement) -->
+        <div class="content-container" id="analyticsContent">
+            <div class="analytics-container">
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h3>Revenue Analytics</h3>
+                        <div class="metric">
+                            <span class="metric-label">Today's Revenue</span>
+                            <span class="metric-value">$2,450</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Weekly Revenue</span>
+                            <span class="metric-value">$16,800</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Monthly Revenue</span>
+                            <span class="metric-value">$68,500</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Average per Booking</span>
+                            <span class="metric-value">$85</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>Booking Patterns</h3>
+                        <div class="metric">
+                            <span class="metric-label">Peak Hour</span>
+                            <span class="metric-value">7:30 PM</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Busiest Day</span>
+                            <span class="metric-value">Saturday</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Average Party Size</span>
+                            <span class="metric-value">3.2</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">No-Show Rate</span>
+                            <span class="metric-value">8%</span>
+                        </div>
+                    </div>
+
+                    <div class="analytics-card">
+                        <h3>Performance Metrics</h3>
+                        <div class="metric">
+                            <span class="metric-label">System Uptime</span>
+                            <span class="metric-value">99.7%</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Response Time</span>
+                            <span class="metric-value" id="responseTime">1.2s</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Active Users</span>
+                            <span class="metric-value" id="activeUsers">8</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">Table Turnover</span>
+                            <span class="metric-value">2.1/day</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <h3>Weekly Booking Trends</h3>
+                    <div class="chart-placeholder">
+                        Revenue and booking trends chart would be displayed here
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Management (RFP Requirement) -->
+        <div class="content-container" id="customersContent">
+            <div class="customer-container">
+                <div class="customer-search">
+                    <h3>Customer Management</h3>
+                    <input type="text" class="search-input" placeholder="Search customers by name, phone, email..." id="customerSearchInput" onkeyup="searchCustomers()">
+                </div>
+
+                <div class="customer-list" id="customerList">
+                    <div class="customer-item" onclick="viewCustomerDetails(1)">
+                        <div class="customer-name">Margaret Briggs</div>
+                        <div class="customer-info">+61 423 456 789 • margaret@email.com • 15 visits</div>
+                        <div class="customer-tags">
+                            <span class="customer-tag">VIP</span>
+                            <span class="customer-tag">Regular</span>
+                            <span class="customer-tag">Anniversary</span>
+                        </div>
+                    </div>
+                    <div class="customer-item" onclick="viewCustomerDetails(2)">
+                        <div class="customer-name">Kim Etcell</div>
+                        <div class="customer-info">+61 434 567 890 • kim@company.com • 3 visits</div>
+                        <div class="customer-tags">
+                            <span class="customer-tag">Business</span>
+                            <span class="customer-tag">Large Group</span>
+                        </div>
+                    </div>
+                    <div class="customer-item" onclick="viewCustomerDetails(3)">
+                        <div class="customer-name">Cathy MacIntyre</div>
+                        <div class="customer-info">+61 445 678 901 • cathy@email.com • 8 visits</div>
+                        <div class="customer-tags">
+                            <span class="customer-tag">Special Diet</span>
+                            <span class="customer-tag">Birthday</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -140,10 +295,12 @@
             <div class="modal-tabs">
                 <button class="modal-tab active" onclick="switchTab('booking')">BOOKING</button>
                 <button class="modal-tab" onclick="switchTab('customer')">CUSTOMER</button>
+                <button class="modal-tab" onclick="switchTab('notifications')">NOTIFICATIONS</button>
                 <button class="modal-tab" onclick="switchTab('tags')">TAGS</button>
                 <button class="modal-tab" onclick="switchTab('notes')">NOTES</button>
                 <button class="modal-tab" onclick="switchTab('links')">LINKS</button>
-                <button class="modal-tab" onclick="switchTab('payment')">PAYMENT</button>
+                <!-- <button class="modal-tab" onclick="switchTab('payment')">PAYMENT</button> -->
+                <!-- Payment tab commented for future use as requested -->
             </div>
 
             <div class="modal-content">
@@ -162,7 +319,7 @@
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label>People</label>
-                                        <select id="partySize" required>
+                                        <select id="partySize" required onchange="checkConflicts()">
                                             <option value="">Select size</option>
                                             <option value="1">1 person</option>
                                             <option value="2">2 people</option>
@@ -177,7 +334,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Duration</label>
-                                        <select id="duration" required>
+                                        <select id="duration" required onchange="checkConflicts()">
                                             <option value="90">1h 30min</option>
                                             <option value="120">2h 00min</option>
                                             <option value="150">2h 30min</option>
@@ -265,15 +422,19 @@
                             <div class="form-section">
                                 <div class="form-group">
                                     <label>Available Times</label>
+                                    <!-- Conflict Detection Alert (RFP Requirement) -->
+                                    <div id="conflictAlert" style="display: none;" class="error-message">
+                                        ⚠️ Time conflict detected! Selected time overlaps with existing booking.
+                                    </div>
                                     <div class="time-slots-grid" id="availableTimes">
-                                        <button type="button" class="time-slot-btn" data-time="17:00">5:00 PM</button>
-                                        <button type="button" class="time-slot-btn" data-time="17:30">5:30 PM</button>
-                                        <button type="button" class="time-slot-btn" data-time="18:00">6:00 PM</button>
-                                        <button type="button" class="time-slot-btn" data-time="18:30">6:30 PM</button>
-                                        <button type="button" class="time-slot-btn" data-time="19:00">7:00 PM</button>
-                                        <button type="button" class="time-slot-btn" data-time="19:30">7:30 PM</button>
-                                        <button type="button" class="time-slot-btn" data-time="20:00">8:00 PM</button>
-                                        <button type="button" class="time-slot-btn" data-time="20:30">8:30 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="17:00" onclick="selectTimeSlot(this)">5:00 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="17:30" onclick="selectTimeSlot(this)">5:30 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="18:00" onclick="selectTimeSlot(this)">6:00 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="18:30" onclick="selectTimeSlot(this)">6:30 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="19:00" onclick="selectTimeSlot(this)">7:00 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="19:30" onclick="selectTimeSlot(this)">7:30 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="20:00" onclick="selectTimeSlot(this)">8:00 PM</button>
+                                        <button type="button" class="time-slot-btn" data-time="20:30" onclick="selectTimeSlot(this)">8:30 PM</button>
                                     </div>
                                 </div>
                             </div>
@@ -295,7 +456,7 @@
                                     <label>Phone Number</label>
                                     <div style="display: flex;">
                                         <div style="background: #f7fafc; border: 1px solid #e2e8f0; border-right: none; padding: 12px 16px; border-radius: 8px 0 0 8px; font-size: 14px;">AU +61</div>
-                                        <input type="tel" id="customerPhone" placeholder="Phone number" style="border-radius: 0 8px 8px 0;">
+                                        <input type="tel" id="customerPhone" placeholder="Phone number" style="border-radius: 0 8px 8px 0;" onchange="searchCustomerByPhone()">
                                     </div>
                                 </div>
 
@@ -322,6 +483,13 @@
 
                             <div class="form-section">
                                 <div class="form-group">
+                                    <label>Customer History</label>
+                                    <div id="customerHistory" style="background: #f7fafc; padding: 20px; border-radius: 8px; min-height: 200px; color: #718096; text-align: center;">
+                                        <div style="margin-top: 80px;">Enter phone number to load customer history</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
                                     <label>Search Results</label>
                                     <p style="color: #718096; font-size: 12px; margin-bottom: 16px;">Select existing customer or create new one.</p>
                                 </div>
@@ -344,6 +512,56 @@
                     </form>
                 </div>
 
+                <!-- Notifications Tab (RFP Requirement) -->
+                <div class="tab-content" id="notificationsTab">
+                    <div class="form-section">
+                        <div class="form-group">
+                            <label>Email Notifications</label>
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" id="sendConfirmation" checked>
+                                    Send booking confirmation email
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" id="sendReminder" checked>
+                                    Send reminder 24 hours before booking
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" id="sendFollowUp">
+                                    Send follow-up email after visit
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>SMS Notifications</label>
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" id="smsConfirmation">
+                                    Send SMS confirmation
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" id="smsReminder" checked>
+                                    Send SMS reminder 2 hours before booking
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>GDPR Compliance</label>
+                            <div style="background: #f0fff4; border: 1px solid #9ae6b4; padding: 16px; border-radius: 8px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" id="gdprConsent" required>
+                                    Customer consents to data processing and marketing communications
+                                </label>
+                                <p style="font-size: 12px; color: #276749; margin-top: 8px; margin-bottom: 0;">
+                                    Required for GDPR compliance. Customer data will be processed according to our privacy policy.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Tags Tab -->
                 <div class="tab-content" id="tagsTab">
                     <div class="form-section">
@@ -355,13 +573,13 @@
                         <div class="form-group">
                             <label>Popular Tags</label>
                             <div class="tag-buttons">
-                                <button type="button" class="tag-button" data-tag="VIP">VIP</button>
-                                <button type="button" class="tag-button" data-tag="Birthday">Birthday</button>
-                                <button type="button" class="tag-button" data-tag="Anniversary">Anniversary</button>
-                                <button type="button" class="tag-button" data-tag="Business">Business</button>
-                                <button type="button" class="tag-button" data-tag="Regular">Regular</button>
-                                <button type="button" class="tag-button" data-tag="Special Diet">Special Diet</button>
-                                <button type="button" class="tag-button" data-tag="Large Group">Large Group</button>
+                                <button type="button" class="tag-button" data-tag="VIP" onclick="toggleTag(this)">VIP</button>
+                                <button type="button" class="tag-button" data-tag="Birthday" onclick="toggleTag(this)">Birthday</button>
+                                <button type="button" class="tag-button" data-tag="Anniversary" onclick="toggleTag(this)">Anniversary</button>
+                                <button type="button" class="tag-button" data-tag="Business" onclick="toggleTag(this)">Business</button>
+                                <button type="button" class="tag-button" data-tag="Regular" onclick="toggleTag(this)">Regular</button>
+                                <button type="button" class="tag-button" data-tag="Special Diet" onclick="toggleTag(this)">Special Diet</button>
+                                <button type="button" class="tag-button" data-tag="Large Group" onclick="toggleTag(this)">Large Group</button>
                             </div>
                         </div>
                     </div>
@@ -387,7 +605,7 @@
                     </div>
                 </div>
 
-                <!-- Links Tab -->
+                <!-- Links Tab  -->
                 <div class="tab-content" id="linksTab">
                     <div class="form-section">
                         <div class="form-group">
@@ -407,7 +625,8 @@
                     </div>
                 </div>
 
-                <!-- Payment Tab -->
+                <!-- Payment Tab (Commented for Future Use) -->
+                <!-- 
                 <div class="tab-content" id="paymentTab">
                     <div style="text-align: center; padding: 40px; color: #718096;">
                         <h3>Payment Processing</h3>
@@ -415,6 +634,7 @@
                         <button type="button" style="padding: 12px 24px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">Configure Payment Gateway</button>
                     </div>
                 </div>
+                -->
             </div>
 
             <div class="modal-nav">
@@ -423,6 +643,40 @@
             </div>
         </div>
     </div>
-        <script src="script.js"></script>
+
+    <!-- Notification Panel (RFP Requirement) -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button onclick="toggleNotifications()" style="background: none; border: none; font-size: 18px; cursor: pointer;">&times;</button>
+        </div>
+        <div id="notificationList">
+            <div class="notification-item">
+                <div class="notification-time">2 minutes ago</div>
+                <div class="notification-message">New booking: John Smith for 4 people at 7:00 PM</div>
+            </div>
+            <div class="notification-item">
+                <div class="notification-time">15 minutes ago</div>
+                <div class="notification-message">Booking confirmed: Sarah Wilson for tomorrow 6:30 PM</div>
+            </div>
+            <div class="notification-item">
+                <div class="notification-time">1 hour ago</div>
+                <div class="notification-message">Table conflict resolved: Table 5 reassigned</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GDPR Notice (RFP Requirement) -->
+    <div class="gdpr-notice" id="gdprNotice">
+        <h4>Cookie and Privacy Notice</h4>
+        <p>We use cookies and process personal data to improve your experience and provide better service. By using this system, you agree to our data processing practices in accordance with GDPR requirements.</p>
+        <div class="gdpr-actions">
+            <button class="gdpr-btn primary" onclick="acceptGDPR()">Accept All</button>
+            <button class="gdpr-btn" onclick="customizeGDPR()">Customize</button>
+            <button class="gdpr-btn" onclick="rejectGDPR()">Reject</button>
+        </div>
+    </div>
+
+<script src="script.js"></script>
 </body>
 </html>
