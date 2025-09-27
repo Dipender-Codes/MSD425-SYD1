@@ -1,4 +1,7 @@
-Restaurant Booking System - Frontend
+******Restaurant Booking System - 
+
+Frontend******
+
 A comprehensive restaurant booking management system built with vanilla JavaScript and modern CSS. Designed for high-volume establishments requiring real-time booking management and conflict prevention.
 Features
 
