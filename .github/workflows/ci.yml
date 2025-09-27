@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      has_frontend: ${{ steps.chk.outputs.has_frontend }}
+      has_backend: ${{ steps.chk.outputs.has_backend }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: chk
+        shell: bash
+        run: |
+          if [ -f frontend/package.json ]; then
+            echo "has_frontend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_frontend=false" >> "$GITHUB_OUTPUT"
+          fi
+          if [ -f backend/package.json ]; then
+            echo "has_backend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_backend=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  frontend:
+    needs: detect
+    if: needs.detect.outputs.has_frontend == 'true'
+    name: Frontend (frontend/)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci || npm install
+      - name: Lint (only if ESLint config exists)
+        run: |
+          if [ -f .eslintrc.js ] || [ -f .eslintrc.cjs ] || [ -f .eslintrc.json ] || [ -f .eslintrc.yml ] || [ -f eslint.config.js ]; then
+            npm run lint --if-present
+          else
+            echo "No ESLint config found; skipping lint."
+          fi
+      - run: npm test --if-present -- --ci --passWithNoTests
+      - run: npm run build --if-present
+
+  backend:
+    needs: detect
+    if: needs.detect.outputs.has_backend == 'true'
+    name: Backend (backend/)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: |
+            backend/package-lock.json
+            backend/yarn.lock
+            backend/pnpm-lock.yaml
+
+      - run: npm ci || npm install
+
+      - name: Lint (only if ESLint config exists)
+        run: |
+          if [ -f .eslintrc ] || [ -f .eslintrc.js ] || [ -f .eslintrc.cjs ] || [ -f .eslintrc.json ] || [ -f .eslintrc.yml ] || [ -f eslint.config.js ]; then
+            npm run lint --if-present
+          else
+            echo "No ESLint config found; skipping lint."
+          fi
+
+      - name: Test (only if tests exist)
+        run: |
+          if [ -d tests ] || [ -f jest.config.js ] || [ -f jest.config.cjs ]; then
+            npm test -- --ci --passWithNoTests
+          else
+            echo "No test files/config found; skipping tests."
+          fi
+
+      - run: npm run build --if-present
+
