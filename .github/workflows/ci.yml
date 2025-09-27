@@ -62,9 +62,10 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-	  backend/package-lock.json
-      	  backend/yarn.lock
-      	  backend/pnpm-lock.yaml
+          cache-dependency-path: |
+            backend/package-lock.json
+            backend/yarn.lock
+            backend/pnpm-lock.yaml
       - run: npm ci || npm install
       - run: npm run lint --if-present
       - run: npm test --if-present -- --ci --passWithNoTests
