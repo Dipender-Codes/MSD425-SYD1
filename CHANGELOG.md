@@ -3,6 +3,13 @@ All notable changes to this project will be documented here.
 
 The format follows https://keepachangelog.com/ and Semantic Versioning.
 
+## [1.1.0](https://github.com/poojaya/MSD425-SYD1/compare/v1.0.0...v1.1.0) (2025-09-28)
+
+
+### Features
+
+* **docs:** add note to trigger v1.1.0 ([d7d532e](https://github.com/poojaya/MSD425-SYD1/commit/d7d532e26a348bd76d19dcc5ef2f127d62492ab7))
+
 ## 1.0.0 (2025-09-27)
 
 

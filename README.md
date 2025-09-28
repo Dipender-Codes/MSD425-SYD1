@@ -238,3 +238,6 @@ CMD ["npm", "start"]
 - Request/response logging
  # or edit a sentence
 # Small tweak
+
+
+- small note to trigger v1.1.0
