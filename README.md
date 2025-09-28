@@ -241,3 +241,4 @@ CMD ["npm", "start"]
 
 
 - small note to trigger v1.1.0
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/poojaya/MSD425-SYD1?display_name=tag&sort=semver)
